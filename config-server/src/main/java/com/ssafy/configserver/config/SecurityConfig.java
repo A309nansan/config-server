@@ -13,6 +13,12 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
 	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() { // InMemoryUser의 password를 암호화 하기 위한 메서드
+
+		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.csrf(AbstractHttpConfigurer::disable)
