@@ -1,0 +1,44 @@
+server:
+  port: 8888
+  servlet:
+    context-path: /config
+
+spring:
+  application:
+    name: config-server
+
+  security:
+    user:
+      name: ${CONFIG_SERVER_USER_NAME}
+      password: ${CONFIG_SERVER_PASSWORD}
+
+  web:
+    resources:
+      add-mappings: false
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${GIT_REPOSITORY_URI}
+          searchPaths:
+            - common
+            - spring
+            - fastapi
+          ignore-local-ssh-settings: true
+          private-key: |
+            ${GIT_PRIVATE_KEY}
+          timeout: 5
+        encrypt:
+          enabled: true
+          key: ${CONFIG_ENCRYPT_KEY}
+    bus:
+      enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - monitor
+          - busrefresh
