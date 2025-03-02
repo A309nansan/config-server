@@ -1,7 +1,5 @@
 server:
   port: 8888
-  servlet:
-    context-path: /config
 
 spring:
   application:
@@ -35,10 +33,15 @@ spring:
     bus:
       enabled: true
 
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+
 management:
   endpoints:
     web:
       exposure:
         include:
           - monitor
-          - busrefresh
