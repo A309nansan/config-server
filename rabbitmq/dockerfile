@@ -6,3 +6,5 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # 기본 포트 노출
 EXPOSE 5672 15672
+
+#TEST
