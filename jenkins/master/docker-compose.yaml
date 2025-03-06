@@ -14,3 +14,7 @@ services:
       - /var/jenkins-master:/var/jenkins_home
     group_add:
       - "${DOCKER_GID}"  # Docker 소켓 그룹 권한 부여
+
+networks:
+  jenkins-network:
+    external: true
