@@ -1,5 +1,5 @@
 # Jenkins 공식 LTS 이미지 기반
-FROM jenkins/jenkins:2.498
+FROM jenkins/jenkins:latest
 
 # root 사용자 권한
 USER root
