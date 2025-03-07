@@ -30,8 +30,11 @@ docker build -t vault:latest .
 
 # vault 작업 공간을 mount할 폴더 미리 생성
 log "vault의 volume을 mount할 Host Machine에 /var/vault 만드는중..."
-sudo mkdir -p /var/vault
+sudo mkdir -p /var/vault/config
 sudo chown -R 1000:1000 /var/vault
+sudo chown -R 1000:1000 /var/vault/config
+
+cp vault.json /var/vault/config
 
 # Docker Compose로 서비스 실행
 log "Docker Compose로 서비스 실행 중..."

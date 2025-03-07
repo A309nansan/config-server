@@ -4,5 +4,5 @@ FROM vault:1.13.3
 ENV TZ=Asia/Seoul
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Vault 설정 파일 복사
-COPY vault.hcl /vault/config/
+# 기본 포트 노출
+EXPOSE 8200
