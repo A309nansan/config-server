@@ -24,10 +24,6 @@ else
   docker network create --driver bridge nansan-network
 fi
 
-# vault 이미지 빌드
-log "vault 이미지 빌드 시작."
-docker build -t vault:latest .
-
 # vault 작업 공간을 mount할 폴더 미리 생성
 log "vault의 volume을 mount할 Host Machine에 /var/vault 만드는중..."
 sudo mkdir -p /var/vault/config
