@@ -1,11 +1,12 @@
 {
-  "backend":{
-    "file":{
-      "path":"/vault/file"
+  "storage": {
+    "file": {
+      "path": "/vault/file"
     }
   },
-  "default_lease_ttl":"876000h",
-  "max_lease_ttl":"876000h",
-  "ui":true,
+  "api_addr": "http://vault:8200",
+  "default_lease_ttl": "876000h",
+  "max_lease_ttl": "876000h",
+  "ui": true,
   "log_level": "info"
 }
