@@ -1,0 +1,14 @@
+FROM vault:latest
+
+# 시간 동기화 설정: Asia/Seoul 타임존으로 설정
+ENV TZ=Asia/Seoul
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Vault 설정 파일 복사
+COPY vault.hcl /vault/config/
+
+# Vault 기본 포트
+EXPOSE 8200
+
+# Vault 실행 명령 (설정 파일 경로에 맞게 수정)
+CMD ["server", "-config=/vault/config/vault.hcl"]

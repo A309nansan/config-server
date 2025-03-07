@@ -1,0 +1,13 @@
+services:
+  vault:
+    image: vault:latest
+    container_name: vault
+    restart: unless-stopped
+    volumes:
+      - /var/vault:/vault
+    networks:
+      - nansan-network
+
+networks:
+  nansan-network:
+    external: true

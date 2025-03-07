@@ -25,7 +25,7 @@ else
 fi
 
 # rabbitmq 이미지 빌드
-log "rabbitmq-master 이미지 빌드 시작."
+log "rabbitmq 이미지 빌드 시작."
 docker build -t rabbitmq:latest .
 
 # rabbitmq 작업 공간을 mount할 폴더 미리 생성
