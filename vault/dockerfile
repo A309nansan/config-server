@@ -1,4 +1,4 @@
-FROM vault:latest
+FROM vault:1.13.3
 
 # 시간 동기화 설정: Asia/Seoul 타임존으로 설정
 ENV TZ=Asia/Seoul

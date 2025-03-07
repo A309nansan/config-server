@@ -1,6 +1,6 @@
 services:
   vault:
-    image: vault:1.13.3
+    image: vault:latest
     container_name: vault
     restart: unless-stopped
     volumes:
