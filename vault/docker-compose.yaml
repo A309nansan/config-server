@@ -5,8 +5,11 @@ services:
     restart: unless-stopped
     cap_add:
       - IPC_LOCK
+    ports:
+      - "8200:8200"
     volumes:
-      - /var/vault:/vault/file
+      - /var/vault/file:/vault/file
+      - /var/vault/logs:/vault/logs
     networks:
       - nansan-network
 
