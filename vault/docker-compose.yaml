@@ -3,6 +3,8 @@ services:
     image: vault:latest
     container_name: vault
     restart: unless-stopped
+    cap_add:
+      - IPC_LOCK
     volumes:
       - /var/vault:/vault/file
     networks:
