@@ -8,6 +8,7 @@ services:
     ports:
       - "8200:8200"
     volumes:
+      - /var/vault/config:/vault/config
       - /var/vault/file:/vault/file
       - /var/vault/logs:/vault/logs
     networks:
