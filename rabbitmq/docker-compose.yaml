@@ -1,0 +1,16 @@
+services:
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - "15672:15672"
+    networks:
+      - nansan-network
+    volumes:
+      - /var/rabbitmq:/var/lib/rabbitmq
+
+networks:
+  nansan-network:
+    external: true
+    
