@@ -19,13 +19,12 @@ spring:
       server:
         git:
           uri: ${CONFIG_SERVER_GIT_URI}
+          username: ${GIT_USERNAME}
+          password: ${GIT_PASSWORD}
           searchPaths:
             - common
             - spring
             - fastapi
-          ignore-local-ssh-settings: true
-          private-key: |
-            ${CONFIG_SERVER_GIT_PK}
           timeout: 5
     bus:
       enabled: true
