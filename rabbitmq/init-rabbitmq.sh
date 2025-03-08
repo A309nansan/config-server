@@ -35,7 +35,7 @@ sudo chown -R 1000:1000 /var/rabbitmq
 
 # Vault 서버 주소와 토큰, 시크릿 경로 설정
 VAULT_ADDR="http://127.0.0.1:8200"
-VAULT_TOKEN="insert your token"
+VAULT_TOKEN=${RABBITMQ_TOKEN}
 SECRET_PATH="rabbitmq/data/authentication"
 
 # Vault API 호출하여 시크릿 조회
