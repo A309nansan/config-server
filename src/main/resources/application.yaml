@@ -7,7 +7,7 @@ spring:
 
   security:
     user:
-      name: ${CONFIG_SERVER_USER_NAME}
+      name: ${CONFIG_SERVER_NAME}
       password: ${CONFIG_SERVER_PASSWORD}
 
   web:
@@ -18,14 +18,14 @@ spring:
     config:
       server:
         git:
-          uri: ${CONFIG_SERVER_REPOSITORY_URI}
+          uri: ${CONFIG_SERVER_GIT_URI}
           searchPaths:
             - common
             - spring
             - fastapi
           ignore-local-ssh-settings: true
           private-key: |
-            ${SSH_PRIVATE_KEY}
+            ${CONFIG_SERVER_GIT_PK}
           timeout: 5
     bus:
       enabled: true
@@ -42,3 +42,9 @@ management:
       exposure:
         include:
           - monitor
+
+logging:
+  file:
+    name: /app/data/config-server.log
+  level:
+    root: INFO
