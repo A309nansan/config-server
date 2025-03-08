@@ -33,24 +33,6 @@ log "rabbitmq의 volume을 mount할 Host Machine에 /var/rabbitmq 만드는중..
 sudo mkdir -p /var/rabbitmq
 sudo chown -R 1000:1000 /var/rabbitmq
 
-# Vault 서버 주소와 토큰, 시크릿 경로 설정
-VAULT_ADDR="http://127.0.0.1:8200"
-VAULT_TOKEN=${RABBITMQ_TOKEN}
-SECRET_PATH="rabbitmq/data/authentication"
-
-# Vault API 호출하여 시크릿 조회
-response=$(curl --silent --header "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/${SECRET_PATH})
-
-# 에러 체크: 응답이 비어있거나 오류가 있을 경우
-if [ -z "$response" ]; then
-  echo "Vault에서 시크릿을 가져오지 못했습니다."
-  exit 1
-fi
-
-# jq를 사용해 JSON 응답에서 사용자 이름과 비밀번호 추출 (jq가 설치되어 있어야 함)
-RABBITMQ_DEFAULT_USER=$(echo "$response" | jq -r '.data.data.RABBITMQ_DEFAULT_USER')
-RABBITMQ_DEFAULT_PASS=$(echo "$response" | jq -r '.data.data.RABBITMQ_DEFAULT_PASS')
-
 # Docker Compose로 서비스 실행
 log "Docker Compose로 서비스 실행 중..."
 docker compose up -d
