@@ -19,6 +19,8 @@ spring:
       enabled: true
     config:
       fail-fast: true
+      monitor:
+        enabled: true
       server:
         git:
           uri: ${CONFIG_SERVER_GIT_URI}
@@ -29,7 +31,6 @@ spring:
             - common
             - spring
             - fastapi
-
   rabbitmq:
     host: rabbitmq
     port: 5672
