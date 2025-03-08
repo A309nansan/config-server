@@ -15,19 +15,20 @@ spring:
       add-mappings: false
 
   cloud:
+    bus:
+      enabled: true
     config:
+      fail-fast: true
       server:
         git:
           uri: ${CONFIG_SERVER_GIT_URI}
           username: ${GIT_USERNAME}
           password: ${GIT_PASSWORD}
+          timeout: 5
           searchPaths:
             - common
             - spring
             - fastapi
-          timeout: 5
-    bus:
-      enabled: true
 
   rabbitmq:
     host: rabbitmq
