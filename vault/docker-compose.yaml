@@ -3,6 +3,8 @@ services:
     image: vault:latest
     container_name: vault
     restart: unless-stopped
+    environment:
+      - VAULT_ADDR=http://vault:8200
     cap_add:
       - IPC_LOCK
     ports:

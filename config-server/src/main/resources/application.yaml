@@ -18,18 +18,15 @@ spring:
     config:
       server:
         git:
-          uri: ${GIT_REPOSITORY_URI}
+          uri: ${CONFIG_SERVER_REPOSITORY_URI}
           searchPaths:
             - common
             - spring
             - fastapi
           ignore-local-ssh-settings: true
           private-key: |
-            ${GIT_PRIVATE_KEY}
+            ${SSH_PRIVATE_KEY}
           timeout: 5
-        encrypt:
-          enabled: true
-          key: ${CONFIG_ENCRYPT_KEY}
     bus:
       enabled: true
 
