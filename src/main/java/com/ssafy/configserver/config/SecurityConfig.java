@@ -24,8 +24,8 @@ public class SecurityConfig {
 		http
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(authorize -> authorize
-					.requestMatchers("/config/**").authenticated()
-					.anyRequest().denyAll()
+					.requestMatchers("/actuator/monitor").permitAll()
+					.anyRequest().authenticated()
 			)
 			.httpBasic(Customizer.withDefaults());
 		return http.build();
