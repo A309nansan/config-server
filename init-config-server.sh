@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Jenkins의 Execute Shell에서 동작하는 코드입니다.
-
 # 명령어 실패 시 스크립트 종료
 set -euo pipefail
 
@@ -28,6 +26,15 @@ else
   docker network create --driver bridge nansan-network
 fi
 
+# `BCrypt` 비밀번호 자동 생성
+log "Generating BCrypt hashed password..."
+CONFIG_SERVER_BCRYPT_PASSWORD=$(python3 -c "import bcrypt, sys; print(bcrypt.hashpw(sys.argv[1].encode(), bcrypt.gensalt()).decode())" "${CONFIG_SERVER_PASSWORD}")
+
+if [[ -z "$CONFIG_SERVER_BCRYPT_PASSWORD" ]]; then
+  log "BCrypt password generation failed!"
+  exit 1
+fi
+
 # Build Gradle
 log "build gradle"
 ./gradlew clean build
@@ -43,7 +50,7 @@ docker run -d \
   --name config-server \
   --restart unless-stopped \
   -e CONFIG_SERVER_NAME=${CONFIG_SERVER_NAME} \
-  -e CONFIG_SERVER_PASSWORD=${CONFIG_SERVER_PASSWORD} \
+  -e CONFIG_SERVER_PASSWORD=${CONFIG_SERVER_BCRYPT_PASSWORD} \
   -e CONFIG_SERVER_GIT_URI=${CONFIG_SERVER_GIT_URI} \
   -e GIT_USERNAME=${GIT_USERNAME} \
   -e GIT_PASSWORD=${GIT_PASSWORD} \
