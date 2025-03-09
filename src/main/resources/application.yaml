@@ -42,10 +42,10 @@ management:
     web:
       exposure:
         include:
-          - monitor
+          - busrefresh
 
 logging:
   file:
     name: /app/data/config-server.log
   level:
-    root: DEBUG
+    root: INFO

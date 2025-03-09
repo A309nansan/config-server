@@ -24,7 +24,7 @@ public class SecurityConfig {
 		http
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(authorize -> authorize
-					.requestMatchers("/actuator/monitor").permitAll()
+					.requestMatchers("/actuator/busrefresh").permitAll()
 					.anyRequest().authenticated()
 			)
 			.httpBasic(Customizer.withDefaults());
