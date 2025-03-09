@@ -25,6 +25,7 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(authorize -> authorize
 					.requestMatchers("/webhook").permitAll()
+					.requestMatchers("/actuator/busrefresh").permitAll()
 					.anyRequest().authenticated()
 			)
 			.httpBasic(Customizer.withDefaults());
