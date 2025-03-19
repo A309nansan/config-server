@@ -76,9 +76,9 @@ docker run -d \
   -e GIT_PASSWORD=${GIT_PASSWORD} \
   -e RABBITMQ_USERNAME=${RABBITMQ_USERNAME} \
   -e RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD} \
-  -e VAULT_SERVER_URI=${VAULT_URI} \
-  -e APP_ROLE_ROLE_ID=${ROLE_ID} \
-  -e APP_ROLE_SECRET_ID=${SECRET_ID} \
+  -e VAULT_SERVER_URI=${VAULT_SERVER_URI} \
+  -e APP_ROLE_ROLE_ID=${APP_ROLE_ROLE_ID} \
+  -e APP_ROLE_SECRET_ID=${APP_ROLE_SECRET_ID} \
   -p 8888:8888 \
   -v /var/config-server:/app/data \
   --network nansan-network \
