@@ -26,6 +26,26 @@ else
   docker network create --driver bridge nansan-network
 fi
 
+# 필요한 환경변수를 Vault에서 가져오기
+log "Get credential data from vault..."
+
+TOKEN_RESPONSES=$(curl -s --request POST \
+  --data "{\"role_id\":\"${ROLE_ID}\", \"secret_id\":\"${SECRET_ID}\"}" \
+  https://vault.nansan.site/v1/auth/approle/login)
+
+CLIENT_TOKEN=$(echo "$TOKEN_RESPONSES" | jq -r '.auth.client_token')
+
+SECRET_RESPONSE=$(curl -s --header "X-Vault-Token: ${CLIENT_TOKEN}" \
+  --request GET https://vault.nansan.site/v1/kv/data/auth)
+
+CONFIG_SERVER_NAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.username')
+CONFIG_SERVER_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.password')
+CONFIG_SERVER_GIT_URI=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.server.git.uri')
+GIT_USERNAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.server.git.username')
+GIT_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.server.git.password')
+RABBITMQ_USERNAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.rabbitmq.username')
+RABBITMQ_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.rabbitmq.password')
+
 # `BCrypt` 비밀번호 자동 생성
 log "Generating BCrypt hashed password..."
 CONFIG_SERVER_BCRYPT_PASSWORD=$(python3 -c "import bcrypt, sys; print(bcrypt.hashpw(sys.argv[1].encode(), bcrypt.gensalt()).decode())" "${CONFIG_SERVER_PASSWORD}")
@@ -56,6 +76,9 @@ docker run -d \
   -e GIT_PASSWORD=${GIT_PASSWORD} \
   -e RABBITMQ_USERNAME=${RABBITMQ_USERNAME} \
   -e RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD} \
+  -e VAULT_SERVER_URI=${VAULT_URI} \
+  -e APP_ROLE_ROLE_ID=${ROLE_ID} \
+  -e APP_ROLE_SECRET_ID=${SECRET_ID} \
   -p 8888:8888 \
   -v /var/config-server:/app/data \
   --network nansan-network \
