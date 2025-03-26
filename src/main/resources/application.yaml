@@ -31,16 +31,6 @@ spring:
             - common
             - spring
             - fastapi
-        vault:
-          uri: ${VAULT_SERVER_URI}
-          backend: kv
-          kv-version: 2
-          defaultKey:
-            - test
-          authentication: APPROLE
-          app-role:
-            role-id: ${APP_ROLE_ROLE_ID}
-            secret-id: ${APP_ROLE_SECRET_ID}
   rabbitmq:
     host: rabbitmq
     port: 5672
