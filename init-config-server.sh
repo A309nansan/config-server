@@ -59,6 +59,10 @@ fi
 log "build gradle"
 ./gradlew clean build
 
+# 기존 서비스 삭제
+log "config-server undeploy"
+docker rm -f config-server
+
 # 기존 config-server 이미지를 삭제하고 새로 빌드
 log "config-server image remove and build."
 docker rmi config-server:latest || true
@@ -76,9 +80,6 @@ docker run -d \
   -e GIT_PASSWORD=${GIT_PASSWORD} \
   -e RABBITMQ_USERNAME=${RABBITMQ_USERNAME} \
   -e RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD} \
-  -e VAULT_SERVER_URI=${VAULT_SERVER_URI} \
-  -e APP_ROLE_ROLE_ID=${APP_ROLE_ROLE_ID} \
-  -e APP_ROLE_SECRET_ID=${APP_ROLE_SECRET_ID} \
   -p 8888:8888 \
   -v /var/config-server:/app/data \
   --network nansan-network \
