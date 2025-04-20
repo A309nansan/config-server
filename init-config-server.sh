@@ -38,11 +38,11 @@ CLIENT_TOKEN=$(echo "$TOKEN_RESPONSES" | jq -r '.auth.client_token')
 SECRET_RESPONSE=$(curl -s --header "X-Vault-Token: ${CLIENT_TOKEN}" \
   --request GET https://vault.nansan.site/v1/kv/data/authentication)
 
-CONFIG_SERVER_NAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.config-server.username')
-CONFIG_SERVER_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.config-server.password')
-CONFIG_SERVER_GIT_URI=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.private-git-repo.uri')
-GIT_USERNAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.private-git-repo.username')
-GIT_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.private-git-repo.password')
+CONFIG_SERVER_NAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.username')
+CONFIG_SERVER_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.password')
+CONFIG_SERVER_GIT_URI=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.privategitrepo.uri')
+GIT_USERNAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.privategitrepo.username')
+GIT_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.privategitrepo.password')
 RABBITMQ_USERNAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.rabbitmq.username')
 RABBITMQ_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.rabbitmq.password')
 
