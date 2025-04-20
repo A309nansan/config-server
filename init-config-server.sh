@@ -36,13 +36,13 @@ TOKEN_RESPONSES=$(curl -s --request POST \
 CLIENT_TOKEN=$(echo "$TOKEN_RESPONSES" | jq -r '.auth.client_token')
 
 SECRET_RESPONSE=$(curl -s --header "X-Vault-Token: ${CLIENT_TOKEN}" \
-  --request GET https://vault.nansan.site/v1/kv/data/auth)
+  --request GET https://vault.nansan.site/v1/kv/data/authentication)
 
-CONFIG_SERVER_NAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.username')
-CONFIG_SERVER_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.password')
-CONFIG_SERVER_GIT_URI=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.server.git.uri')
-GIT_USERNAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.server.git.username')
-GIT_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.server.git.password')
+CONFIG_SERVER_NAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.config-server.username')
+CONFIG_SERVER_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.config-server.password')
+CONFIG_SERVER_GIT_URI=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.private-git-repo.uri')
+GIT_USERNAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.private-git-repo.username')
+GIT_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.private-git-repo.password')
 RABBITMQ_USERNAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.rabbitmq.username')
 RABBITMQ_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.rabbitmq.password')
 
@@ -50,16 +50,11 @@ RABBITMQ_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.rabbitmq.passwor
 log "Generating BCrypt hashed password..."
 CONFIG_SERVER_BCRYPT_PASSWORD=$(python3 -c "import bcrypt, sys; print(bcrypt.hashpw(sys.argv[1].encode(), bcrypt.gensalt()).decode())" "${CONFIG_SERVER_PASSWORD}")
 
-if [[ -z "$CONFIG_SERVER_BCRYPT_PASSWORD" ]]; then
-  log "BCrypt password generation failed!"
-  exit 1
-fi
-
 # Build Gradle
 log "build gradle"
 ./gradlew clean build
 
-# 기존 서비스 삭제
+# 기존 인스턴스 삭제
 log "config-server undeploy"
 docker rm -f config-server
 
@@ -73,6 +68,8 @@ log "Execute config-server..."
 docker run -d \
   --name config-server \
   --restart unless-stopped \
+  -v /var/config-server:/app/data \
+  -p 8888:8888 \
   -e CONFIG_SERVER_NAME=${CONFIG_SERVER_NAME} \
   -e CONFIG_SERVER_PASSWORD=${CONFIG_SERVER_BCRYPT_PASSWORD} \
   -e CONFIG_SERVER_GIT_URI=${CONFIG_SERVER_GIT_URI} \
@@ -80,8 +77,6 @@ docker run -d \
   -e GIT_PASSWORD=${GIT_PASSWORD} \
   -e RABBITMQ_USERNAME=${RABBITMQ_USERNAME} \
   -e RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD} \
-  -p 8888:8888 \
-  -v /var/config-server:/app/data \
   --network nansan-network \
   config-server:latest
 
