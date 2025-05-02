@@ -38,11 +38,11 @@ CLIENT_TOKEN=$(echo "$TOKEN_RESPONSES" | jq -r '.auth.client_token')
 SECRET_RESPONSE=$(curl -s --header "X-Vault-Token: ${CLIENT_TOKEN}" \
   --request GET https://vault.nansan.site/v1/kv/data/authentication)
 
-CONFIG_SERVER_NAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.username')
+CONFIG_SERVER_USERNAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.username')
 CONFIG_SERVER_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.password')
-CONFIG_SERVER_GIT_URI=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.privategitrepo.uri')
-GIT_USERNAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.privategitrepo.username')
-GIT_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.privategitrepo.password')
+PRIVATE_GIT_URI=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.privategitrepo.uri')
+PRIVATE_GIT_USERNAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.privategitrepo.username')
+PRIVATE_GIT_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.privategitrepo.password')
 RABBITMQ_USERNAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.rabbitmq.username')
 RABBITMQ_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.rabbitmq.password')
 
@@ -70,11 +70,11 @@ docker run -d \
   --restart unless-stopped \
   -v /var/config-server:/app/data \
   -p 13010:8888 \
-  -e CONFIG_SERVER_NAME=${CONFIG_SERVER_NAME} \
+  -e CONFIG_SERVER_USERNAME=${CONFIG_SERVER_USERNAME} \
   -e CONFIG_SERVER_PASSWORD=${CONFIG_SERVER_BCRYPT_PASSWORD} \
-  -e CONFIG_SERVER_GIT_URI=${CONFIG_SERVER_GIT_URI} \
-  -e GIT_USERNAME=${GIT_USERNAME} \
-  -e GIT_PASSWORD=${GIT_PASSWORD} \
+  -e PRIVATE_GIT_URI=${PRIVATE_GIT_URI} \
+  -e PRIVATE_GIT_USERNAME=${PRIVATE_GIT_USERNAME} \
+  -e PRIVATE_GIT_PASSWORD=${PRIVATE_GIT_PASSWORD} \
   -e RABBITMQ_USERNAME=${RABBITMQ_USERNAME} \
   -e RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD} \
   --network nansan-network \
