@@ -69,7 +69,7 @@ docker run -d \
   --name config-server \
   --restart unless-stopped \
   -v /var/config-server:/app/data \
-  -p 8888:8888 \
+  -p 13010:8888 \
   -e CONFIG_SERVER_NAME=${CONFIG_SERVER_NAME} \
   -e CONFIG_SERVER_PASSWORD=${CONFIG_SERVER_BCRYPT_PASSWORD} \
   -e CONFIG_SERVER_GIT_URI=${CONFIG_SERVER_GIT_URI} \
