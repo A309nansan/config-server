@@ -67,6 +67,8 @@ docker build -t config-server:latest .
 log "Execute config-server..."
 docker run -d \
   --name config-server \
+  --dns 8.8.8.8 \
+  --dns 1.1.1.1 \
   --restart unless-stopped \
   -v /var/config-server:/app/data \
   -p 13010:8888 \
