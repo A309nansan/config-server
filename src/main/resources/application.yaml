@@ -26,7 +26,6 @@ spring:
           uri: ${PRIVATE_GIT_URI}
           username: ${PRIVATE_GIT_USERNAME}
           password: ${PRIVATE_GIT_PASSWORD}
-          timeout: 5
           searchPaths:
             - common
             - spring
